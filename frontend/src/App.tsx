@@ -1,26 +1,17 @@
 
-import { useState, useEffect } from "react";
+import TodoList from "./components/TodoList";
 import "./App.css";
 
-type Message = { message: string };
-
 function App(): JSX.Element {
-  const [data, setData] = useState<string | null>(null);
-  const url: string = "http://localhost:3001";
-
-  useEffect(() => {
-    fetch(`${url}/api`)
-      .then((res) => res.json())
-      .then((data: Message) => setData(data.message));
-  }, []);
 
   return ( 
   <>
-    <h1>Vite + React</h1>
-    <div className="card">
-      <p>{!data ? "Loading..." : data}</p>
-    </div>
-  </> );
+  <div className="container">
+    <h1 className='text-center p-5 m-5'>Todo list</h1>
+    <TodoList/>
+  </div>
+  </> 
+  );
 }
 
 export default App;

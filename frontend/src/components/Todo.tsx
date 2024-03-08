@@ -53,6 +53,22 @@ function Todo(){
             console.error("Error", error);
         }
     };
+
+    const handleDeleteTodo = async (todoId: string) => {
+        try {
+           const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
+             method: "DELETE",
+           });
+       
+           if (response.ok) {
+             setTodos(todos.filter((todo) => todo.id !== todoId));
+           } else {
+             console.error("Error deleting todo", await response.text());
+           }
+        } catch (error) {
+           console.error("Error deleting todo", error);
+        }
+       };
   
     return (
         <div className="container">
@@ -66,7 +82,7 @@ function Todo(){
             />
             <div className="p-5 m-5">
                 {todos.map((todo) => (
-                    <TodoList key={todo.id} todo={todo}/>
+                    <TodoList key={todo.id} todo={todo} onDelete={handleDeleteTodo}/>
                 ))}
             </div>
         </div>

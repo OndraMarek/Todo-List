@@ -36,6 +36,19 @@ app.post("/api/todos", (req, res) => {
   res.json({ message: "Úkol přidán úspěšně!" });
 });
 
+app.delete("/api/todos/:id", (req, res) => {
+  const id = req.params.id;
+ 
+  const index = todos.findIndex(todo => todo.id === id);
+ 
+  if (index !== -1) {
+     todos.splice(index, 1);
+     res.json({ message: "Úkol byl úspěšně smazán!" });
+  } else {
+     res.status(404).json({ message: "Úkol nebyl nalezen." });
+  }
+ });
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

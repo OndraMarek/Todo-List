@@ -2,9 +2,10 @@ import Todo from "./Todo";
 
 interface TodoInputProps {
   todo: Todo;
+  onDelete: (id: string) => void;
 }
 
-function TodoList({todo} : TodoInputProps) {
+function TodoList({todo, onDelete} : TodoInputProps) {
 
   const priorityClassMap = {
     Vysoká: "bg-danger",
@@ -20,7 +21,7 @@ return (
                 <div className="justify-content-right">
                   <span className={`me-5 badge ${priorityClassMap[todo.priority as keyof typeof priorityClassMap] || "bg-secondary"}`}>{todo.priority}</span>
                   <input className="me-2" type="checkbox" checked={todo.done}/>
-                  <button className="btn btn-danger">Smazat</button>
+                  <button className="btn btn-danger" onClick={() => onDelete(todo.id)}>Smazat</button>
                 </div>
             </li>
         </ul>

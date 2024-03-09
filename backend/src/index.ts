@@ -9,6 +9,8 @@ interface Todos{
   title: string
   priority: string; 
   done: boolean;
+  date?: string;
+  note?: string;
 }
 
 const app: Express = express();

@@ -8,12 +8,15 @@ interface Todo {
     title: string;
     priority: string;
     done: boolean;
+    date?: string;
+    note?: string;
   }
 
 function Todo(){
     const [todos, setTodos] = useState<Todo[]>([]);
     const [todoTitle, setTodoTitle] = useState("");
     const [todoPriority, setTodoPriority] = useState("");
+    const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
     useEffect(() => {
         const fetchTodos = async () => {
@@ -104,6 +107,8 @@ function Todo(){
                 todoPriority={todoPriority}
                 setTodoPriority={setTodoPriority}
                 handleAddTodo={handleAddTodo}
+                showAdditionalInputs={showAdditionalInputs}
+                setShowAdditionalInputs={setShowAdditionalInputs}
             />
             <div className="p-5 m-5">
                 {todos.map((todo) => (

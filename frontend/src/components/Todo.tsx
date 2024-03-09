@@ -14,8 +14,7 @@ interface Todo {
 
 function Todo(){
     const [todos, setTodos] = useState<Todo[]>([]);
-    const [todoTitle, setTodoTitle] = useState("");
-    const [todoPriority, setTodoPriority] = useState("");
+
     const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
     useEffect(() => {
@@ -27,35 +26,35 @@ function Todo(){
         fetchTodos();
     }, []);
 
-    const handleAddTodo = async () => {
-        if (!todoTitle.trim() || !todoPriority) {
-            alert("Please enter a title and select a priority.");
-            return;
+    const handleAddTodo = async (title:string, priority:string, date?: string, note?: string) => {
+        if (!title.trim() || !priority) {
+          alert("Please enter a title and select a priority.");
+          return;
         }
         const newTodo: Todo = {
-            id: uuid(),
-            title: todoTitle,
-            priority: todoPriority,
-            done: false,
+          id: uuid(),
+          title,
+          priority,
+          done: false,
+          date,
+          note,
         };
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newTodo),
-            });
-
-            if (response.ok) {
-                setTodoTitle("");
-                setTodoPriority("");
-                setTodos([...todos, newTodo]);
-            } else {
-                console.error("Error", await response.text());
-            }
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newTodo),
+          });
+    
+          if (response.ok) {
+            setTodos([...todos, newTodo]);
+          } else {
+            console.error("Error", await response.text());
+          }
         } catch (error) {
-            console.error("Error", error);
+          console.error("Error", error);
         }
-    };
+     };
 
     const handleDeleteTodo = async (todoId: string) => {
         try {
@@ -76,24 +75,23 @@ function Todo(){
     const handleToggleDone = async (todoId: string) => {
         const todoIndex = todos.findIndex(todo => todo.id === todoId);
         if (todoIndex === -1) return;
-    
         const updatedTodo = { ...todos[todoIndex], done: !todos[todoIndex].done };
         const newTodos = todos.filter(todo => todo.id !== todoId);
         const updatedTodos = updatedTodo.done ? [...newTodos, updatedTodo] : [updatedTodo, ...newTodos];
         setTodos(updatedTodos);
     
         try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedTodo),
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedTodo),
         });
     
         if (!response.ok) {
             console.error("Error updating todo", await response.text());
         }
         } catch (error) {
-        console.error("Error updating todo", error);
+            console.error("Error updating todo", error);
         }
     };
     
@@ -102,10 +100,6 @@ function Todo(){
         <div className="container">
             <h1 className='text-center p-5 m-5'>Todo list</h1>
             <TodoInput
-                todoTitle={todoTitle}
-                setTodoTitle={setTodoTitle}
-                todoPriority={todoPriority}
-                setTodoPriority={setTodoPriority}
                 handleAddTodo={handleAddTodo}
                 showAdditionalInputs={showAdditionalInputs}
                 setShowAdditionalInputs={setShowAdditionalInputs}

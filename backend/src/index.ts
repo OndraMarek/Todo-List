@@ -30,15 +30,25 @@ app.get("/api", (req, res) => {
 
 app.post("/api/todos", (req, res) => {
   const newTodo: Todos = req.body;
-
   todos.push(newTodo);
-
   res.json({ message: "Úkol přidán úspěšně!" });
 });
 
+app.put("/api/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const updatedTodo: Todos = req.body;
+  const index = todos.findIndex(todo => todo.id === id);
+
+  if (index !== -1) {
+     todos[index] = updatedTodo;
+     res.json({ message: "Úkol byl úspěšně aktualizován!" });
+  } else {
+     res.status(404).json({ message: "Úkol nebyl nalezen." });
+  }
+ });
+
 app.delete("/api/todos/:id", (req, res) => {
   const id = req.params.id;
- 
   const index = todos.findIndex(todo => todo.id === id);
  
   if (index !== -1) {

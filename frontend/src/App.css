@@ -1,0 +1,9 @@
+.checkbox{
+    top: 1.2rem;
+    scale: 1.7;
+    margin-right: 0.8rem;
+}
+
+.completed {
+    text-decoration: line-through;
+}

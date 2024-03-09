@@ -68,7 +68,33 @@ function Todo(){
         } catch (error) {
            console.error("Error deleting todo", error);
         }
-       };
+    };
+
+    // Todo.tsx
+const handleToggleDone = async (todoId: string) => {
+    const todoIndex = todos.findIndex(todo => todo.id === todoId);
+    if (todoIndex === -1) return;
+   
+    const updatedTodo = { ...todos[todoIndex], done: !todos[todoIndex].done };
+    const newTodos = todos.filter(todo => todo.id !== todoId);
+    const updatedTodos = updatedTodo.done ? [...newTodos, updatedTodo] : [updatedTodo, ...newTodos];
+    setTodos(updatedTodos);
+   
+    try {
+       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
+         method: "PUT",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify(updatedTodo),
+       });
+   
+       if (!response.ok) {
+         console.error("Error updating todo", await response.text());
+       }
+    } catch (error) {
+       console.error("Error updating todo", error);
+    }
+   };
+    
   
     return (
         <div className="container">
@@ -82,7 +108,7 @@ function Todo(){
             />
             <div className="p-5 m-5">
                 {todos.map((todo) => (
-                    <TodoList key={todo.id} todo={todo} onDelete={handleDeleteTodo}/>
+                    <TodoList key={todo.id} todo={todo} onDelete={handleDeleteTodo} onToggleDone={handleToggleDone}/>
                 ))}
             </div>
         </div>

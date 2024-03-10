@@ -23,7 +23,7 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
 
   const handleButtonClick = () => {
     setShowAdditionalInputs(!showAdditionalInputs);
- };
+  };
 
   return (
       <form onSubmit={handleSubmit}>

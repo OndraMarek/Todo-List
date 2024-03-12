@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
 
 interface Todos {
+  _id?: ObjectId;
   id: string;
   title: string
   priority: string; 
@@ -16,11 +17,10 @@ interface Todos {
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
+const client = new MongoClient('mongodb://localhost:27017');
 
 app.use(cors());
 app.use(express.json());
-
-const client = new MongoClient(process.env.MONGODB_URI || "mongodb://localhost:27017");
 
 client.connect().then(() => {
   console.log("Connected to database");
@@ -30,20 +30,20 @@ client.connect().then(() => {
   });
 
   app.get("/api", async (req, res) => {
-    const todos = await client.db("TodoList").collection("todos").find().toArray();
+    const todos = await getTodos();
     res.json({ todos });
   });
 
   app.post("/api/todos", async (req, res) => {
     const newTodo: Todos = req.body;
-    await client.db("TodoList").collection("todos").insertOne(newTodo);
+    await addTodo(newTodo);
     res.json({ message: "Úkol přidán úspěšně!" });
   });
 
   app.put("/api/todos/:id", async (req, res) => {
     const id = req.params.id;
     const updatedTodo: Todos = req.body;
-    const result = await client.db("TodoList").collection("todos").updateOne({id: id}, {$set: updatedTodo});
+    const result = await updateTodo(id, updatedTodo);
     if (result.matchedCount > 0) {
       res.json({ message: "Úkol byl úspěšně aktualizován!" });
     } else {
@@ -53,7 +53,7 @@ client.connect().then(() => {
 
   app.delete("/api/todos/:id", async (req, res) => {
     const id = req.params.id;
-    const result = await client.db("TodoList").collection("todos").deleteOne({id: id});
+    const result = await deleteTodo(id);
     if (result.deletedCount > 0) {
       res.json({ message: "Úkol byl úspěšně smazán!" });
     } else {
@@ -67,3 +67,20 @@ client.connect().then(() => {
 }).catch((err) => {
   console.error("Failed to connect to database", err);
 });
+
+async function getTodos() {
+  return await client.db("TodoList").collection("todos").find().toArray();
+}
+
+async function addTodo(newTodo: Todos) {
+  return await client.db("TodoList").collection("todos").insertOne(newTodo);
+}
+
+async function updateTodo(id: string, updatedTodo: Todos) {
+  delete updatedTodo._id;
+  return await client.db("TodoList").collection("todos").updateOne({id: id}, {$set: updatedTodo});
+}
+
+async function deleteTodo(id: string) {
+  return await client.db("TodoList").collection("todos").deleteOne({id: id});
+}

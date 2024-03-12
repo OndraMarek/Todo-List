@@ -14,7 +14,6 @@ interface Todo {
 
 function Todo(){
     const [todos, setTodos] = useState<Todo[]>([]);
-
     const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
     useEffect(() => {

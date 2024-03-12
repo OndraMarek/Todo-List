@@ -8,7 +8,6 @@ interface TodoInputProps {
 }
 
 function TodoList({todo, onDelete, onToggleDone} : TodoInputProps) {
-
   const [showAdditionalProperties, setShowAdditionalProperties] = useState(false);
   const priorityClassMap = {
     Vysoká: "bg-danger",

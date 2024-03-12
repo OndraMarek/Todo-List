@@ -18,7 +18,7 @@ function Todo() {
   return (
     <div className="container">
       <TodoInput handleAddTodo={addTodo} showAdditionalInputs={showAdditionalInputs} setShowAdditionalInputs={setShowAdditionalInputs} />
-      <div className="p-5 m-5">
+      <div className="mt-5">
         <TodoList todos={todos} onDelete={deleteTodo} onToggleDone={toggleDone} />
       </div>
     </div>

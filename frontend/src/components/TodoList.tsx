@@ -10,7 +10,7 @@ interface TodoListProps {
 function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   return (
     <div className="row justify-content-center align-items-center">
-      <ul className="list-group col-lg-8">
+      <ul className="list-group col-lg-8 col-md-12 col-sm-12">
         {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onToggleDone={onToggleDone} />
         ))}

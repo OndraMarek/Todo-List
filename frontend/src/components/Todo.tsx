@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import TodoInput from "./TodoInput";
-import TodoList from "./TodoList";
-import { v4 as uuid } from "uuid";
-
+import { useState } from 'react';
+import TodoList from './TodoList';
+import TodoInput from './TodoInput';
+import { useTodos } from '../hooks/useTodos';
 interface Todo {
     id: string;
     title: string;
@@ -12,104 +11,18 @@ interface Todo {
     note?: string;
   }
 
-function Todo(){
-    const [todos, setTodos] = useState<Todo[]>([]);
-    const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+function Todo() {
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const { todos, addTodo, deleteTodo, toggleDone } = useTodos();
 
-    useEffect(() => {
-        const fetchTodos = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api`); 
-        const data = await response.json();
-        setTodos(data.todos);
-    };
-        fetchTodos();
-    }, []);
-
-    const handleAddTodo = async (title:string, priority:string, date?: string, note?: string) => {
-        if (!title.trim() || !priority) {
-          alert("Please enter a title and select a priority.");
-          return;
-        }
-        const newTodo: Todo = {
-          id: uuid(),
-          title,
-          priority,
-          done: false,
-          date,
-          note,
-        };
-        try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newTodo),
-          });
-    
-          if (response.ok) {
-            setTodos([...todos, newTodo]);
-          } else {
-            console.error("Error", await response.text());
-          }
-        } catch (error) {
-          console.error("Error", error);
-        }
-     };
-
-    const handleDeleteTodo = async (todoId: string) => {
-        try {
-           const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
-             method: "DELETE",
-           });
-       
-           if (response.ok) {
-             setTodos(todos.filter((todo) => todo.id !== todoId));
-           } else {
-             console.error("Error deleting todo", await response.text());
-           }
-        } catch (error) {
-           console.error("Error deleting todo", error);
-        }
-    };
-
-    const handleToggleDone = async (todoId: string) => {
-        const todoIndex = todos.findIndex(todo => todo.id === todoId);
-        if (todoIndex === -1) return;
-        const updatedTodo = { ...todos[todoIndex], done: !todos[todoIndex].done };
-        const newTodos = todos.filter(todo => todo.id !== todoId);
-        const updatedTodos = updatedTodo.done ? [...newTodos, updatedTodo] : [updatedTodo, ...newTodos];
-        setTodos(updatedTodos);
-    
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todos/${todoId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedTodo),
-        });
-    
-        if (!response.ok) {
-            console.error("Error updating todo", await response.text());
-        }
-        } catch (error) {
-            console.error("Error updating todo", error);
-        }
-    };
-    
-  
-    return (
-        <div className="container">
-            <h1 className='text-center p-5 m-5'>Todo list</h1>
-            <TodoInput
-                handleAddTodo={handleAddTodo}
-                showAdditionalInputs={showAdditionalInputs}
-                setShowAdditionalInputs={setShowAdditionalInputs}
-            />
-            <div className="p-5 m-5">
-                {todos.map((todo) => (
-                    <TodoList key={todo.id} todo={todo} onDelete={handleDeleteTodo} onToggleDone={handleToggleDone}/>
-                ))}
-            </div>
-        </div>
-    );
+  return (
+    <div className="container">
+      <TodoInput handleAddTodo={addTodo} showAdditionalInputs={showAdditionalInputs} setShowAdditionalInputs={setShowAdditionalInputs} />
+      <div className="p-5 m-5">
+        <TodoList todos={todos} onDelete={deleteTodo} onToggleDone={toggleDone} />
+      </div>
+    </div>
+  );
 }
 
 export default Todo;

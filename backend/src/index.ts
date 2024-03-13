@@ -17,7 +17,7 @@ interface Todos {
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
-const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
+const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoList');
 
 app.use(cors());
 app.use(express.json());

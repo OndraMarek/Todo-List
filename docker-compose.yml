@@ -1,6 +1,14 @@
-version: '3'
-
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    container_name: frontend
+    
   backend:
     build:
       context: ./backend
@@ -14,18 +22,8 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017/TodoList
     container_name: backend
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - VITE_API_URL=http://localhost:3001
-    container_name: frontend
-
   mongodb:
-    image: mongo
+    image: mongo:7.0.0
     ports:
       - "27017:27017"
     volumes:

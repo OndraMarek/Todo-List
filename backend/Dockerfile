@@ -10,9 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:20-alpine AS production
-
-WORKDIR /app
+FROM node:20-alpine
 
 COPY --from=build /app/dist ./dist
 COPY package*.json ./

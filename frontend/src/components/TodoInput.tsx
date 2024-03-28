@@ -44,7 +44,7 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-6 col-lg-7 col-12">
           <input
             type="text"
             name="title"
@@ -54,7 +54,7 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
             onChange={handleInputChange}
           />
         </div>
-        <div className="col-md-3">
+        <div className="col-md-3 col-lg-3  col-6">
           <select
             name="priority"
             className="form-select"
@@ -67,10 +67,10 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
             <option value="Low">Nízká</option>
           </select>
         </div>
-        <div className="col-md-1">
-          <button type="submit" className="btn btn-success">Přidat</button>
+        <div className="col-md-1 col-lg-1 col-3 mr">
+          <button type="submit" className="btn btn-success mr">Přidat</button>
         </div>
-        <div className="col-md-1">
+        <div className="col-md-1 col-lg-1 col-3">
           <button type="button" className="btn btn-primary" onClick={handleButtonClick}>
             {showAdditionalInputs ? "Méně.." : "Více.."}
           </button>

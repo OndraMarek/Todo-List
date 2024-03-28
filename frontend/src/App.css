@@ -17,3 +17,24 @@
     bottom: 0;
     width: 100%;
 }
+
+.underline {
+    text-decoration: underline;
+  }
+
+@media only screen 
+and (max-device-width: 992px)
+{ 
+    .mr{
+        margin-right: 15px;
+    }
+}
+
+@media only screen 
+and (max-device-width: 768px)
+{ 
+    .mr{
+        margin-right: 0px;
+    }
+}
+

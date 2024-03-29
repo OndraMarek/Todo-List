@@ -13,18 +13,21 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   const [isAscending, setIsAscending] = useState(true);
 
   const sortedTodos = [...todos].sort((todoA, todoB) => {
-    let comparison = 0;
-    switch (sortKey) {
-      case 'title':
-        comparison = todoA.title.localeCompare(todoB.title);
-        break;
-      case 'priority':
-        comparison = todoA.priority.localeCompare(todoB.priority);
-        break;
-      default:
-        comparison = todoA.done === todoB.done ? 0 : todoA.done ? 1 : -1;
+    if (todoA.done === todoB.done) {
+      let comparison = 0;
+      switch (sortKey) {
+        case 'title':
+          comparison = todoA.title.localeCompare(todoB.title);
+          break;
+        case 'priority':
+          comparison = todoA.priority.localeCompare(todoB.priority);
+          break;
+        default:
+          return 0;
+      }
+      return isAscending ? comparison : -comparison;
     }
-    return isAscending ? comparison : -comparison; 
+    return todoA.done ? 1 : -1;
   });
 
   const handleSort = (key: string) => {
@@ -42,7 +45,7 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
         {todos.length > 0 && (
           <div className='row'>
             <div className='col-md-6'>
-              <label className='underline' onClick={() => handleSort('title')}>Název:</label>
+              <label className='underline' onClick={() => handleSort('title')}>Název úkolu:</label>
             </div>
             <div className='col-md-6'>
               <label className='underline' onClick={() => handleSort('priority')}>Priorita:</label>

@@ -43,9 +43,10 @@ function TodoItem({ todo, onDelete, onToggleDone }: TodoItemProps) {
         </div>
       {showAdditionalProperties && !todo.done && (
         <div className="row">
+          <hr className="mt-3" />
           <div className="col-md-6">
-            <label htmlFor="pDate">Datum:</label>
-            <p id="pDate">{todo.date}</p>
+            <label>Datum:</label>
+            <p>{todo.date}</p>
           </div>
           <div className="col-md-6">
             <label>Popis:</label>

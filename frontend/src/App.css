@@ -20,7 +20,12 @@
 
 .underline {
     text-decoration: underline;
+    font-weight: bold;
   }
+
+label {
+    font-weight: bold;
+}
 
 @media only screen 
 and (max-device-width: 992px)

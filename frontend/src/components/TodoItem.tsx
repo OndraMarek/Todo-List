@@ -35,7 +35,7 @@ function TodoItem({ todo, onDelete, onToggleDone }: TodoItemProps) {
                 {priorityTranslationMap[todo.priority as keyof typeof priorityTranslationMap] || todo.priority}
                 </span>
                 <input className="align-middle me-3 checkbox" type="checkbox" checked={todo.done} onChange={() => onToggleDone(todo.id)}/>
-                <button type="button" className="me-3 btn btn-primary" onClick={handleButtonClick} disabled={!todo.date || !todo.note || todo.done}>
+                <button type="button" className="me-3 btn btn-primary" onClick={handleButtonClick} disabled={!todo.date && !todo.note || todo.done}>
                     Více..
                 </button>
                 <button className="btn btn-danger" onClick={() => onDelete(todo.id)}>Smazat</button>

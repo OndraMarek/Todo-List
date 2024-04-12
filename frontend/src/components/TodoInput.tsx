@@ -23,9 +23,16 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
     };
   }
   const [formState, setFormState] = useState<FormState>(getDefaultFormValues());
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+    if (!formState.title || !formState.priority) {
+        setErrorMessage('Zadejte název a prioritu úkolu');
+        return;
+    }
+
     handleAddTodo(formState.title, formState.priority, formState.date, formState.note);
     setFormState(getDefaultFormValues());
   };
@@ -99,6 +106,7 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
         )}
         
       </div>
+      {errorMessage && <p className="mt-1">{errorMessage}</p>}
     </form>
   );
 }

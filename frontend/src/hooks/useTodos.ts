@@ -17,10 +17,6 @@ export function useTodos() {
   }, [API_URL]);
 
   const addTodo = async (title: string, priority: string, date?: string, note?: string) => {
-    if (!title.trim() || !priority) {
-        alert("Please enter a title and select a priority.");
-        return;
-      }
       const newTodo: Todo = {
         id: uuid(),
         title,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export type FormValues = {
   title: string;
@@ -23,8 +23,8 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
     setErrorMessage("");
     if (!formState.title || !formState.priority) {
       setErrorMessage("Zadejte název a prioritu úkolu");
@@ -36,13 +36,13 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<
+    event: ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     setFormState({
       ...formState,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 

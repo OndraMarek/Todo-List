@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 export type FormValues = {
   title: string;
-  priority: string;
+  priority: "Low" | "Medium" | "High";
   date: string;
   note: string;
 };
@@ -17,7 +17,7 @@ type HtmlElementChangeEvent = ChangeEvent<
 
 const defaultFormValues: FormValues = {
   title: "",
-  priority: "",
+  priority: "Medium",
   date: "",
   note: "",
 };
@@ -69,6 +69,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
             className="form-select"
             value={formState.priority}
             onChange={handleInputChange}
+            required
           >
             <option hidden value="">
               Priorita

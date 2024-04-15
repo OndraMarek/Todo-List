@@ -5,7 +5,7 @@ import { useTodos } from "../hooks/useTodos";
 type Todo = {
   id: string;
   title: string;
-  priority: string;
+  priority: "Low" | "Medium" | "High";
   done: boolean;
   date?: string;
   note?: string;

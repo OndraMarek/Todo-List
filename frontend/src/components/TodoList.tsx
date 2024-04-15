@@ -8,6 +8,12 @@ type TodoListProps = {
   onToggleDone: (id: string) => void;
 };
 
+const priorityMap = {
+  Low: 0,
+  Medium: 1,
+  High: 2,
+};
+
 function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   const [sortKey, setSortKey] = useState("");
   const [isAscending, setIsAscending] = useState(true);
@@ -15,17 +21,23 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   const sortedTodos = [...todos].sort((todoA, todoB) => {
     if (todoA.done === todoB.done) {
       let comparison = 0;
+      const priorityA = priorityMap[todoA.priority] || 0;
+      const priorityB = priorityMap[todoB.priority] || 0;
       switch (sortKey) {
         case "title":
-          comparison = todoA.title.localeCompare(todoB.title);
+          comparison = isAscending
+            ? todoA.title.localeCompare(todoB.title)
+            : todoB.title.localeCompare(todoA.title);
           break;
         case "priority":
-          comparison = todoA.priority.localeCompare(todoB.priority);
+          comparison = isAscending
+            ? priorityA - priorityB
+            : priorityB - priorityA;
           break;
         default:
           return 0;
       }
-      return isAscending ? comparison : -comparison;
+      return comparison;
     }
     return todoA.done ? 1 : -1;
   });

@@ -2,11 +2,11 @@ import { useState } from "react";
 import Todo from "./Todo";
 import TodoItem from "./TodoItem";
 
-interface TodoListProps {
+type TodoListProps = {
   todos: Todo[];
   onDelete: (id: string) => void;
   onToggleDone: (id: string) => void;
-}
+};
 
 function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   const [sortKey, setSortKey] = useState("");

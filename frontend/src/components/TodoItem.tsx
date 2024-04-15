@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Todo from "./Todo";
 
-interface TodoItemProps {
+type TodoItemProps = {
   todo: Todo;
   onDelete: (id: string) => void;
   onToggleDone: (id: string) => void;
-}
+};
 
 function TodoItem({ todo, onDelete, onToggleDone }: TodoItemProps) {
   const [showAdditionalProperties, setShowAdditionalProperties] =

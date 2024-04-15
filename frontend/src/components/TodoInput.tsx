@@ -1,28 +1,17 @@
 import { useState } from "react";
 
-interface TodoInputProps {
-  handleAddTodo: (
-    title: string,
-    priority: string,
-    date?: string,
-    note?: string
-  ) => void;
-  showAdditionalInputs: boolean;
-  setShowAdditionalInputs: (show: boolean) => void;
-}
-
-interface FormState {
+export type FormState = {
   title: string;
   priority: string;
   date: string;
   note: string;
-}
+};
 
-function TodoInput({
-  handleAddTodo,
-  showAdditionalInputs,
-  setShowAdditionalInputs,
-}: TodoInputProps) {
+type TodoInputProps = {
+  handleAddTodo: (state: FormState) => void;
+};
+
+function TodoInput({ handleAddTodo }: TodoInputProps) {
   const getDefaultFormValues = () => {
     return {
       title: "",
@@ -33,6 +22,7 @@ function TodoInput({
   };
   const [formState, setFormState] = useState<FormState>(getDefaultFormValues());
   const [errorMessage, setErrorMessage] = useState("");
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,12 +32,7 @@ function TodoInput({
       return;
     }
 
-    handleAddTodo(
-      formState.title,
-      formState.priority,
-      formState.date,
-      formState.note
-    );
+    handleAddTodo(formState);
     setFormState(getDefaultFormValues());
   };
 

@@ -31,42 +31,46 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
   });
 
   const handleSort = (key: string) => {
-    if (sortKey === key) {
-      setIsAscending(!isAscending);
-    } else {
-      setSortKey(key);
-      setIsAscending(true);
-    }
+    setSortKey(key);
+    setIsAscending((isAscending) => !isAscending);
   };
 
   return (
     <div className="row justify-content-center align-items-center">
       <ul className="list-group col-lg-8 col-md-12 col-sm-12">
-        {todos.length > 0 && (
-          <div className="row">
-            <div className="col-md-6">
-              <label className="underline" onClick={() => handleSort("title")}>
-                Název úkolu:
-              </label>
+        {sortedTodos.length > 0 ? (
+          <>
+            <div className="row">
+              <div className="col-md-6">
+                <label
+                  className="underline"
+                  onClick={() => handleSort("title")}
+                >
+                  Název úkolu:
+                </label>
+              </div>
+              <div className="col-md-6">
+                <label
+                  className="underline"
+                  onClick={() => handleSort("priority")}
+                >
+                  Priorita:
+                </label>
+              </div>
             </div>
-            <div className="col-md-6">
-              <label
-                className="underline"
-                onClick={() => handleSort("priority")}
-              >
-                Priorita:
-              </label>
-            </div>
-          </div>
+
+            {sortedTodos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                onDelete={onDelete}
+                onToggleDone={onToggleDone}
+              />
+            ))}
+          </>
+        ) : (
+          <h3 className="text-center">There are no Todos yet!</h3>
         )}
-        {sortedTodos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onDelete={onDelete}
-            onToggleDone={onToggleDone}
-          />
-        ))}
       </ul>
     </div>
   );

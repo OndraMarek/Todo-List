@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type FormState = {
+export type FormValues = {
   title: string;
   priority: string;
   date: string;
@@ -8,19 +8,18 @@ export type FormState = {
 };
 
 type TodoInputProps = {
-  handleAddTodo: (state: FormState) => void;
+  handleAddTodo: (values: FormValues) => void;
+};
+
+const defaultFormValues: FormValues = {
+  title: "",
+  priority: "",
+  date: "",
+  note: "",
 };
 
 function TodoInput({ handleAddTodo }: TodoInputProps) {
-  const getDefaultFormValues = () => {
-    return {
-      title: "",
-      priority: "",
-      date: "",
-      note: "",
-    };
-  };
-  const [formState, setFormState] = useState<FormState>(getDefaultFormValues());
+  const [formState, setFormState] = useState<FormValues>(defaultFormValues);
   const [errorMessage, setErrorMessage] = useState("");
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
@@ -33,7 +32,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
     }
 
     handleAddTodo(formState);
-    setFormState(getDefaultFormValues());
+    setFormState(defaultFormValues);
   };
 
   const handleInputChange = (

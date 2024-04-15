@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import Todo from "../components/Todo";
-import { FormState } from "../components/TodoInput";
+import { FormValues } from "../components/TodoInput";
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -17,9 +17,9 @@ export function useTodos() {
     fetchTodos();
   }, [API_URL]);
 
-  const addTodo = async (todoValues: FormState) => {
+  const addTodo = async (formValues: FormValues) => {
     const newTodo: Todo = {
-      ...todoValues,
+      ...formValues,
       id: uuid(),
       done: false,
     };

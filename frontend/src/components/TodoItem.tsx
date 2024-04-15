@@ -26,18 +26,18 @@ function TodoItem({ todo, onDelete, onToggleDone }: TodoItemProps) {
     setShowAdditionalProperties((showAdditionalProps) => !showAdditionalProps);
   };
 
-  function getPriorityClass(todo: Todo) {
+  const getPriorityClass = (todo: Todo) => {
     if (todo.done) {
       return "bg-secondary";
     }
     return priorityClassMap[todo.priority as keyof typeof priorityClassMap];
-  }
+  };
 
-  function getPriorityTranslation(todo: Todo) {
+  const getPriorityTranslation = (todo: Todo) => {
     return priorityTranslationMap[
       todo.priority as keyof typeof priorityTranslationMap
     ];
-  }
+  };
 
   return (
     <li

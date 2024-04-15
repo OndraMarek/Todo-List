@@ -52,8 +52,9 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="row">
+      <div className="row align-items-end">
         <div className="col-md-6 col-lg-7 col-12">
+          <label>Název úkolu:</label>
           <input
             type="text"
             name="title"
@@ -64,6 +65,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
           />
         </div>
         <div className="col-md-3 col-lg-3 col-6">
+          <label>Priorita:</label>
           <select
             name="priority"
             className="form-select"
@@ -71,12 +73,9 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
             onChange={handleInputChange}
             required
           >
-            <option hidden value="">
-              Priorita
-            </option>
-            <option value="High">Vysoká</option>
-            <option value="Medium">Střední</option>
             <option value="Low">Nízká</option>
+            <option value="Medium">Střední</option>
+            <option value="High">Vysoká</option>
           </select>
         </div>
         <div className="col-md-1 col-lg-1 col-3 mr">

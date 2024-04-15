@@ -11,6 +11,10 @@ type TodoInputProps = {
   handleAddTodo: (values: FormValues) => void;
 };
 
+type HtmlElementChangeEvent = ChangeEvent<
+  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+>;
+
 const defaultFormValues: FormValues = {
   title: "",
   priority: "",
@@ -35,11 +39,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
     setFormState(defaultFormValues);
   };
 
-  const handleInputChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleInputChange = (event: HtmlElementChangeEvent) => {
     setFormState({
       ...formState,
       [event.target.name]: event.target.value,
@@ -47,7 +47,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
   };
 
   const handleButtonClick = () => {
-    setShowAdditionalInputs(!showAdditionalInputs);
+    setShowAdditionalInputs((showInputs) => !showInputs);
   };
 
   return (
@@ -63,7 +63,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
             onChange={handleInputChange}
           />
         </div>
-        <div className="col-md-3 col-lg-3  col-6">
+        <div className="col-md-3 col-lg-3 col-6">
           <select
             name="priority"
             className="form-select"
@@ -92,7 +92,7 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
             {showAdditionalInputs ? "Méně.." : "Více.."}
           </button>
         </div>
-        {showAdditionalInputs && (
+        {showAdditionalInputs ? (
           <>
             <div className="pt-3 col-md-6">
               <input
@@ -113,9 +113,9 @@ function TodoInput({ handleAddTodo }: TodoInputProps) {
               />
             </div>
           </>
-        )}
+        ) : null}
       </div>
-      {errorMessage && <p className="mt-1">{errorMessage}</p>}
+      {errorMessage ? <p className="mt-1">{errorMessage}</p> : null}
     </form>
   );
 }

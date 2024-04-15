@@ -5,15 +5,16 @@ import { MongoClient, ObjectId } from "mongodb";
 
 dotenv.config();
 
-interface Todos {
-  _id?: ObjectId;
-  id: string;
+type Uuid = string;
+
+type Todo = {
+  id: Uuid;
   title: string;
   priority: string;
   done: boolean;
   date?: string;
   note?: string;
-}
+};
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
@@ -33,20 +34,20 @@ client
       res.send("Express + TypeScript Server");
     });
 
-    app.get("/api", async (req, res) => {
+    app.get("/api/todos", async (req, res) => {
       const todos = await getTodos();
       res.json({ todos });
     });
 
-    app.post("/api/todos", async (req, res) => {
-      const newTodo: Todos = req.body;
+    app.post("/api/todos/add", async (req, res) => {
+      const newTodo: Todo = req.body;
       await addTodo(newTodo);
       res.json({ message: "Úkol přidán úspěšně!" });
     });
 
-    app.put("/api/todos/:id", async (req, res) => {
-      const id = req.params.id;
-      const updatedTodo: Todos = req.body;
+    app.put("/api/todos/update/:id", async (req, res) => {
+      const { id } = req.params;
+      const updatedTodo: Todo = req.body;
       const result = await updateTodo(id, updatedTodo);
       if (result.matchedCount > 0) {
         res.json({ message: "Úkol byl úspěšně aktualizován!" });
@@ -55,8 +56,8 @@ client
       }
     });
 
-    app.delete("/api/todos/:id", async (req, res) => {
-      const id = req.params.id;
+    app.delete("/api/todos/delete/:id", async (req, res) => {
+      const { id } = req.params;
       const result = await deleteTodo(id);
       if (result.deletedCount > 0) {
         res.json({ message: "Úkol byl úspěšně smazán!" });
@@ -74,21 +75,24 @@ client
   });
 
 async function getTodos() {
-  return await client.db("TodoList").collection("todos").find().toArray();
+  return await client
+    .db("TodoList")
+    .collection("todos")
+    .find({}, { projection: { _id: 0 } })
+    .toArray();
 }
 
-async function addTodo(newTodo: Todos) {
+async function addTodo(newTodo: Todo) {
   return await client.db("TodoList").collection("todos").insertOne(newTodo);
 }
 
-async function updateTodo(id: string, updatedTodo: Todos) {
-  delete updatedTodo._id;
+async function updateTodo(id: Uuid, updatedTodo: Todo) {
   return await client
     .db("TodoList")
     .collection("todos")
     .updateOne({ id: id }, { $set: updatedTodo });
 }
 
-async function deleteTodo(id: string) {
+async function deleteTodo(id: Uuid) {
   return await client.db("TodoList").collection("todos").deleteOne({ id: id });
 }

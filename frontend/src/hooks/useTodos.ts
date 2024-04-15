@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
-import Todo from '../components/Todo';
+import { useState, useEffect } from "react";
+import { v4 as uuid } from "uuid";
+import Todo from "../components/Todo";
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -9,51 +9,56 @@ export function useTodos() {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const response = await fetch(`${API_URL}/api`);
+      const response = await fetch(`${API_URL}/api/todos`);
       const data = await response.json();
       setTodos(data.todos);
     };
     fetchTodos();
   }, [API_URL]);
 
-  const addTodo = async (title: string, priority: string, date?: string, note?: string) => {
-      const newTodo: Todo = {
-        id: uuid(),
-        title,
-        priority,
-        done: false,
-        date,
-        note,
-      };
-      try {
-        const response = await fetch(`${API_URL}/api/todos`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newTodo),
-        });
-        if (response.ok) {
-          setTodos((prevTodos) => [...prevTodos, newTodo]);
-        } else {
-          throw new Error("Error adding todo");
-        }
-      } catch (err) {
-        console.error(err);
+  const addTodo = async (
+    title: string,
+    priority: string,
+    date?: string,
+    note?: string
+  ) => {
+    const newTodo: Todo = {
+      id: uuid(),
+      title,
+      priority,
+      done: false,
+      date,
+      note,
+    };
+    try {
+      const response = await fetch(`${API_URL}/api/todos/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTodo),
+      });
+      if (response.ok) {
+        setTodos((prevTodos) => [...prevTodos, newTodo]);
+      } else {
+        throw new Error("Error adding todo");
       }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteTodo = async (id: string) => {
     try {
-        const response = await fetch(`${API_URL}/api/todos/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          setTodos(todos.filter((todo) => todo.id !== id));
-        } else {
-          throw new Error("Error deleting todo");
-        }
-      } catch (err) {
-        console.error(err);
+      const response = await fetch(`${API_URL}/api/todos/delete/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setTodos(todos.filter((todo) => todo.id !== id));
+      } else {
+        throw new Error("Error deleting todo");
       }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const toggleDone = async (id: string) => {
@@ -61,7 +66,7 @@ export function useTodos() {
     if (!todoToUpdate) return;
     const updatedTodo = { ...todoToUpdate, done: !todoToUpdate.done };
     try {
-      const response = await fetch(`${API_URL}/api/todos/${id}`, {
+      const response = await fetch(`${API_URL}/api/todos/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedTodo),

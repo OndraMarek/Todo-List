@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import TodoList from './TodoList';
-import TodoInput from './TodoInput';
-import { useTodos } from '../hooks/useTodos';
+import { useState } from "react";
+import TodoList from "./TodoList";
+import TodoInput from "./TodoInput";
+import { useTodos } from "../hooks/useTodos";
 interface Todo {
-    id: string;
-    title: string;
-    priority: string;
-    done: boolean;
-    date?: string;
-    note?: string;
-  }
+  id: string;
+  title: string;
+  priority: string;
+  done: boolean;
+  date?: string;
+  note?: string;
+}
 
 function Todo() {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
@@ -17,9 +17,17 @@ function Todo() {
 
   return (
     <div className="container">
-      <TodoInput handleAddTodo={addTodo} showAdditionalInputs={showAdditionalInputs} setShowAdditionalInputs={setShowAdditionalInputs} />
+      <TodoInput
+        handleAddTodo={addTodo}
+        showAdditionalInputs={showAdditionalInputs}
+        setShowAdditionalInputs={setShowAdditionalInputs}
+      />
       <div className="mt-5">
-        <TodoList todos={todos} onDelete={deleteTodo} onToggleDone={toggleDone} />
+        <TodoList
+          todos={todos}
+          onDelete={deleteTodo}
+          onToggleDone={toggleDone}
+        />
       </div>
     </div>
   );

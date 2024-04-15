@@ -1,16 +1,19 @@
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import Main from "./components/Main";
+import Todo from "./components/Todo";
 
 function App(): JSX.Element {
+  return (
+    <>
+      <Header />
 
-  return ( 
-  <>
-    <Header/>
-    <Main/>
-    <Footer/> 
-  </>
+      <main>
+        <Todo />
+      </main>
+
+      <Footer />
+    </>
   );
 }
 

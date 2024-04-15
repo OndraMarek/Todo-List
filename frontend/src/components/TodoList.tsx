@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import Todo from './Todo';
-import TodoItem from './TodoItem';
+import { useState } from "react";
+import Todo from "./Todo";
+import TodoItem from "./TodoItem";
 
 interface TodoListProps {
   todos: Todo[];
@@ -9,17 +9,17 @@ interface TodoListProps {
 }
 
 function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
-  const [sortKey, setSortKey] = useState('');
+  const [sortKey, setSortKey] = useState("");
   const [isAscending, setIsAscending] = useState(true);
 
   const sortedTodos = [...todos].sort((todoA, todoB) => {
     if (todoA.done === todoB.done) {
       let comparison = 0;
       switch (sortKey) {
-        case 'title':
+        case "title":
           comparison = todoA.title.localeCompare(todoB.title);
           break;
-        case 'priority':
+        case "priority":
           comparison = todoA.priority.localeCompare(todoB.priority);
           break;
         default:
@@ -32,7 +32,7 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
 
   const handleSort = (key: string) => {
     if (sortKey === key) {
-      setIsAscending(!isAscending); 
+      setIsAscending(!isAscending);
     } else {
       setSortKey(key);
       setIsAscending(true);
@@ -41,19 +41,31 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
 
   return (
     <div className="row justify-content-center align-items-center">
-      <ul className="list-group col-lg-8 col-md-12 col-sm-12">  
+      <ul className="list-group col-lg-8 col-md-12 col-sm-12">
         {todos.length > 0 && (
-          <div className='row'>
-            <div className='col-md-6'>
-              <label className='underline' onClick={() => handleSort('title')}>Název úkolu:</label>
+          <div className="row">
+            <div className="col-md-6">
+              <label className="underline" onClick={() => handleSort("title")}>
+                Název úkolu:
+              </label>
             </div>
-            <div className='col-md-6'>
-              <label className='underline' onClick={() => handleSort('priority')}>Priorita:</label>
+            <div className="col-md-6">
+              <label
+                className="underline"
+                onClick={() => handleSort("priority")}
+              >
+                Priorita:
+              </label>
             </div>
           </div>
         )}
-        {sortedTodos.map(todo => (
-          <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onToggleDone={onToggleDone} />
+        {sortedTodos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onDelete={onDelete}
+            onToggleDone={onToggleDone}
+          />
         ))}
       </ul>
     </div>

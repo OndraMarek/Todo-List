@@ -1,9 +1,8 @@
 function Header(): JSX.Element {
-
-  return ( 
-  <header className="mb-4 p-4 bg-primary text-white">
-    <h1 className="text-center my-5">To-Do list</h1>
-  </header> 
+  return (
+    <header className="mb-4 p-4 bg-primary text-white">
+      <h1 className="text-center my-5">To-Do list</h1>
+    </header>
   );
 }
 

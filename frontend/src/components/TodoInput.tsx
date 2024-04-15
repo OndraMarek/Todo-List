@@ -1,8 +1,13 @@
 import { useState } from "react";
 
 interface TodoInputProps {
-  handleAddTodo: (title: string, priority: string, date?: string, note?: string) => void;
-  showAdditionalInputs: boolean; 
+  handleAddTodo: (
+    title: string,
+    priority: string,
+    date?: string,
+    note?: string
+  ) => void;
+  showAdditionalInputs: boolean;
   setShowAdditionalInputs: (show: boolean) => void;
 }
 
@@ -13,7 +18,11 @@ interface FormState {
   note: string;
 }
 
-function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs }: TodoInputProps) {
+function TodoInput({
+  handleAddTodo,
+  showAdditionalInputs,
+  setShowAdditionalInputs,
+}: TodoInputProps) {
   const getDefaultFormValues = () => {
     return {
       title: "",
@@ -21,23 +30,32 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
       date: "",
       note: "",
     };
-  }
+  };
   const [formState, setFormState] = useState<FormState>(getDefaultFormValues());
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage('');
+    setErrorMessage("");
     if (!formState.title || !formState.priority) {
-        setErrorMessage('Zadejte název a prioritu úkolu');
-        return;
+      setErrorMessage("Zadejte název a prioritu úkolu");
+      return;
     }
 
-    handleAddTodo(formState.title, formState.priority, formState.date, formState.note);
+    handleAddTodo(
+      formState.title,
+      formState.priority,
+      formState.date,
+      formState.note
+    );
     setFormState(getDefaultFormValues());
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
@@ -68,17 +86,25 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
             value={formState.priority}
             onChange={handleInputChange}
           >
-            <option hidden value="">Priorita</option>
+            <option hidden value="">
+              Priorita
+            </option>
             <option value="High">Vysoká</option>
             <option value="Medium">Střední</option>
             <option value="Low">Nízká</option>
           </select>
         </div>
         <div className="col-md-1 col-lg-1 col-3 mr">
-          <button type="submit" className="btn btn-success mr">Přidat</button>
+          <button type="submit" className="btn btn-success mr">
+            Přidat
+          </button>
         </div>
         <div className="col-md-1 col-lg-1 col-3">
-          <button type="button" className="btn btn-primary" onClick={handleButtonClick}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleButtonClick}
+          >
             {showAdditionalInputs ? "Méně.." : "Více.."}
           </button>
         </div>
@@ -104,7 +130,6 @@ function TodoInput({handleAddTodo, showAdditionalInputs, setShowAdditionalInputs
             </div>
           </>
         )}
-        
       </div>
       {errorMessage && <p className="mt-1">{errorMessage}</p>}
     </form>

@@ -81,7 +81,7 @@ function TodoList({ todos, onDelete, onToggleDone }: TodoListProps) {
             ))}
           </>
         ) : (
-          <h3 className="text-center">There are no Todos yet!</h3>
+          <h3 className="text-center">Žádný úkol ještě nebyl vytvořen!</h3>
         )}
       </ul>
     </div>
